@@ -91,7 +91,7 @@ if ( ! class_exists( 'WC_Admin_Dashboard_Setup', false ) ) :
 		 * @return string
 		 */
 		public function get_button_link( $task ) {
-			$url = (string) $task->get_json()['actionUrl'];
+			$url = $task->get_json()['actionUrl'];
 
 			if ( substr( $url, 0, 4 ) === 'http' ) {
 				return $url;
@@ -187,7 +187,7 @@ if ( ! class_exists( 'WC_Admin_Dashboard_Setup', false ) ) :
 				return false;
 			}
 
-			if ( ! $this->get_task_list() || $this->get_task_list()->is_hidden() || $this->get_task_list()->is_complete() ) {
+			if ( ! $this->get_task_list() || $this->get_task_list()->is_complete() || $this->get_task_list()->is_hidden() ) {
 				return false;
 			}
 

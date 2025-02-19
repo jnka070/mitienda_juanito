@@ -6,7 +6,6 @@
 namespace Automattic\WooCommerce\Internal;
 
 use Automattic\WooCommerce\Proxies\LegacyProxy;
-use WC_Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -41,19 +40,6 @@ class DownloadPermissionsAdjuster {
 	public function maybe_schedule_adjust_download_permissions( \WC_Product $product ) {
 		$children_ids = $product->get_children();
 		if ( ! $children_ids ) {
-			return;
-		}
-
-		$are_any_children_downloadable = false;
-		foreach ( $children_ids as $child_id ) {
-			$child = wc_get_product( $child_id );
-			if ( $child && $child->is_downloadable() ) {
-				$are_any_children_downloadable = true;
-				break;
-			}
-		}
-
-		if ( ! $product->is_downloadable() && ! $are_any_children_downloadable ) {
 			return;
 		}
 
@@ -113,21 +99,7 @@ class DownloadPermissionsAdjuster {
 
 		$children_with_downloads = array();
 		foreach ( $children_ids as $child_id ) {
-			$child = wc_get_product( $child_id );
-
-			// Ensure we have a valid child product.
-			if ( ! $child instanceof WC_Product ) {
-				wc_get_logger()->warning(
-					sprintf(
-						/* translators: 1: child product ID 2: parent product ID. */
-						__( 'Unable to load child product %1$d while adjusting download permissions for product %2$d.', 'woocommerce' ),
-						$child_id,
-						$product_id
-					)
-				);
-				continue;
-			}
-
+			$child                                = wc_get_product( $child_id );
 			$children_with_downloads[ $child_id ] = $this->get_download_files_and_permissions( $child );
 		}
 
@@ -182,7 +154,7 @@ class DownloadPermissionsAdjuster {
 					'file' => $file,
 					'data' => (array) $permission->data,
 				);
-				$result['permission_data_by_file_order_user'][ "{$file}:{$permission_data['user_id']}:{$permission_data['order_id']}" ] = $data;
+				$result['permission_data_by_file_order_user'][ "${file}:${permission_data['user_id']}:${permission_data['order_id']}" ] = $data;
 			}
 		}
 

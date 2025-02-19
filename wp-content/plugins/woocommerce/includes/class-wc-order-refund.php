@@ -7,8 +7,6 @@
  * @package WooCommerce\Classes
  */
 
-use Automattic\WooCommerce\Enums\OrderStatus;
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -43,22 +41,6 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	);
 
 	/**
-	 * List of properties that were earlier managed by data store. However, since DataStore is a not a stored entity in itself, they used to store data in metadata of the data object.
-	 * With custom tables, some of these are moved from metadata to their own columns, but existing code will still try to add them to metadata. This array is used to keep track of such properties.
-	 *
-	 * Only reason to add a property here is that you are moving properties from DataStore instance to data object. Otherwise, if you are adding a new property, consider adding it to $data array instead.
-	 *
-	 * @var array
-	 */
-	protected $legacy_datastore_props = array(
-		'_refund_amount',
-		'_refund_reason',
-		'_refunded_by',
-		'_refunded_payment',
-	);
-
-
-	/**
 	 * Get internal type (post type.)
 	 *
 	 * @return string
@@ -74,7 +56,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	 * @return string
 	 */
 	public function get_status( $context = 'view' ) {
-		return OrderStatus::COMPLETED;
+		return 'completed';
 	}
 
 	/**
@@ -82,7 +64,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	 */
 	public function get_post_title() {
 		// @codingStandardsIgnoreStart
-		return sprintf( __( 'Refund &ndash; %s', 'woocommerce' ), (new DateTime('now'))->format( _x( 'M d, Y @ h:i A', 'Order date parsed by DateTime::format', 'woocommerce' ) ) );
+		return sprintf( __( 'Refund &ndash; %s', 'woocommerce' ), strftime( _x( '%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce' ) ) );
 		// @codingStandardsIgnoreEnd
 	}
 
@@ -101,7 +83,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	 *
 	 * @since 2.2
 	 * @param  string $context What the value is for. Valid values are view and edit.
-	 * @return string
+	 * @return int|float
 	 */
 	public function get_reason( $context = 'view' ) {
 		return $this->get_prop( 'reason', $context );
@@ -212,7 +194,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 			return false;
 		}
 
-		$result = wc_get_order( $id );
+		$result = get_post( $id );
 
 		if ( $result ) {
 			$this->populate( $result );
@@ -237,7 +219,7 @@ class WC_Order_Refund extends WC_Abstract_Order {
 	 * Get refund reason.
 	 *
 	 * @deprecated 3.0
-	 * @return string
+	 * @return int|float
 	 */
 	public function get_refund_reason() {
 		wc_deprecated_function( 'get_refund_reason', '3.0', 'get_reason' );

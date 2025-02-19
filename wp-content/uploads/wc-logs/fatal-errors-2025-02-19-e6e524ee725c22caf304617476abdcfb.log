@@ -1,0 +1,101 @@
+2025-02-19T18:16:10+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\SpecRunner.php:121
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\SpecRunner.php(121): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(118): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(172): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run()
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run_on_deactivated_plugin('instapago/insta...')
+#5 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#6 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#7 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(840): do_action('deactivated_plu...', 'instapago/insta...', false)
+#8 C:\laragon\www\miTienda\wp-admin\plugins.php(211): deactivate_plugins('instapago/insta...', false, false)
+#9 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\src\Admin\RemoteInboxNotifications\SpecRunner.php on line 121
+
+2025-02-19T18:53:21+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(113): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run()
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(324): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run_on_woocommerce_admin_updated('')
+#5 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#6 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#7 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src-internal\Admin\Install.php(165): do_action('woocommerce_adm...')
+#8 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(324): Automattic\WooCommerce\Internal\Admin\Install::check_version('')
+#9 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#10 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#11 C:\laragon\www\miTienda\wp-settings.php(704): do_action('init')
+#12 C:\laragon\www\miTienda\wp-config.php(109): require_once('C:\\laragon\\www\\...')
+#13 C:\laragon\www\miTienda\wp-load.php(50): require_once('C:\\laragon\\www\\...')
+#14 C:\laragon\www\miTienda\wp-admin\admin.php(34): require_once('C:\\laragon\\www\\...')
+#15 C:\laragon\www\miTienda\wp-admin\plugins.php(10): require_once('C:\\laragon\\www\\...')
+#16 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+
+2025-02-19T18:54:25+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run('instapago/insta...')
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#5 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#6 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(730): do_action('activated_plugi...', 'instapago/insta...', false)
+#7 C:\laragon\www\miTienda\wp-admin\plugins.php(60): activate_plugin('instapago/insta...', 'http://mitienda...', false)
+#8 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+
+2025-02-19T19:09:41+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run('google-listings...')
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#5 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#6 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(730): do_action('activated_plugi...', 'google-listings...', false)
+#7 C:\laragon\www\miTienda\wp-admin\plugins.php(60): activate_plugin('google-listings...', 'http://mitienda...', false)
+#8 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+
+2025-02-19T19:11:17+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(155): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run()
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run_on_deactivated_plugin('instapago/insta...')
+#5 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#6 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#7 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(840): do_action('deactivated_plu...', 'instapago/insta...', false)
+#8 C:\laragon\www\miTienda\wp-admin\plugins.php(211): deactivate_plugins('instapago/insta...', false, false)
+#9 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+
+2025-02-19T19:16:00+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run('akismet/akismet...')
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#5 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#6 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(730): do_action('activated_plugi...', 'akismet/akismet...', false)
+#7 C:\laragon\www\miTienda\wp-admin\plugins.php(60): activate_plugin('akismet/akismet...', 'http://mitienda...', false)
+#8 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+
+2025-02-19T19:35:42+00:00 CRITICAL Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php:122
+Stack trace:
+#0 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(122): array_filter(NULL, Object(Closure))
+#1 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php(53): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::get_locale(NULL)
+#2 C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\RemoteInboxNotificationsEngine.php(101): Automattic\WooCommerce\Admin\RemoteInboxNotifications\SpecRunner::run_spec(Array, Object(stdClass))
+#3 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(326): Automattic\WooCommerce\Admin\RemoteInboxNotifications\RemoteInboxNotificationsEngine::run('instapago/insta...')
+#4 C:\laragon\www\miTienda\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters(NULL, Array)
+#5 C:\laragon\www\miTienda\wp-includes\plugin.php(517): WP_Hook->do_action(Array)
+#6 C:\laragon\www\miTienda\wp-admin\includes\plugin.php(730): do_action('activated_plugi...', 'instapago/insta...', false)
+#7 C:\laragon\www\miTienda\wp-admin\plugins.php(60): activate_plugin('instapago/insta...', 'http://mitienda...', false)
+#8 {main}
+  thrown in C:\laragon\www\miTienda\wp-content\plugins\woocommerce\packages\woocommerce-admin\src\RemoteInboxNotifications\SpecRunner.php on line 122
+

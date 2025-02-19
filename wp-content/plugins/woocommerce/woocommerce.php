@@ -2,14 +2,14 @@
 /**
  * Plugin Name: WooCommerce
  * Plugin URI: https://woocommerce.com/
- * Description: An ecommerce toolkit that helps you sell anything. Beautifully.
- * Version: 9.6.2
+ * Description: An eCommerce toolkit that helps you sell anything. Beautifully.
+ * Version: 6.4.0
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain: woocommerce
  * Domain Path: /i18n/languages/
- * Requires at least: 6.6
- * Requires PHP: 7.4
+ * Requires at least: 5.7
+ * Requires PHP: 7.0
  *
  * @package WooCommerce
  */
@@ -48,20 +48,15 @@ function WC() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.Fu
 }
 
 /**
- * Returns the WooCommerce object container.
+ * Returns the WooCommerce PSR11-compatible object container.
  * Code in the `includes` directory should use the container to get instances of classes in the `src` directory.
  *
  * @since  4.4.0
- * @return \Automattic\WooCommerce\Container The WooCommerce object container.
+ * @return \Psr\Container\ContainerInterface The WooCommerce PSR11 container.
  */
-function wc_get_container() {
+function wc_get_container() : \Psr\Container\ContainerInterface {
 	return $GLOBALS['wc_container'];
 }
 
 // Global for backwards compatibility.
 $GLOBALS['woocommerce'] = WC();
-
-// Jetpack's Rest_Authentication needs to be initialized even before plugins_loaded.
-if ( class_exists( \Automattic\Jetpack\Connection\Rest_Authentication::class ) ) {
-	\Automattic\Jetpack\Connection\Rest_Authentication::init();
-}

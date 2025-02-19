@@ -106,7 +106,7 @@ class WC_Integration_MaxMind_Geolocation extends WC_Integration {
 						'The key that will be used when dealing with MaxMind Geolocation services. You can read how to generate one in <a href="%1$s">MaxMind Geolocation Integration documentation</a>.',
 						'woocommerce'
 					),
-					'https://woocommerce.com/document/maxmind-geolocation-integration/'
+					'https://docs.woocommerce.com/document/maxmind-geolocation-integration/'
 				),
 				'desc_tip'    => false,
 				'default'     => '',
@@ -168,10 +168,7 @@ class WC_Integration_MaxMind_Geolocation extends WC_Integration {
 	public function update_database( $new_database_path = null ) {
 		// Allow us to easily interact with the filesystem.
 		require_once ABSPATH . 'wp-admin/includes/file.php';
-		if ( ! WP_Filesystem() ) {
-			wc_get_logger()->warning( __( 'Failed to initialise WC_Filesystem API while trying to update the MaxMind Geolocation database.', 'woocommerce' ) );
-			return;
-		}
+		WP_Filesystem();
 		global $wp_filesystem;
 
 		// Remove any existing archives to comply with the MaxMind TOS.

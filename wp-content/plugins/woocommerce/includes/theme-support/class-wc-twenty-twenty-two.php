@@ -20,6 +20,10 @@ class WC_Twenty_Twenty_Two {
 	 */
 	public static function init() {
 
+		// Change WooCommerce wrappers.
+		remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
+		remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
+
 		// This theme doesn't have a traditional sidebar.
 		remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
 
@@ -34,8 +38,7 @@ class WC_Twenty_Twenty_Two {
 		add_theme_support( 'wc-product-gallery-zoom' );
 		add_theme_support( 'wc-product-gallery-lightbox' );
 		add_theme_support( 'wc-product-gallery-slider' );
-		add_theme_support(
-			'woocommerce',
+		add_theme_support( 'woocommerce',
 			array(
 				'thumbnail_image_width' => 450,
 				'single_image_width'    => 600,

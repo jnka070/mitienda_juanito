@@ -28,7 +28,6 @@ class WC_Shipping_Rate {
 		'label'       => '',
 		'cost'        => 0,
 		'taxes'       => array(),
-		'tax_status'  => 'taxable',
 	);
 
 	/**
@@ -48,16 +47,14 @@ class WC_Shipping_Rate {
 	 * @param array   $taxes       Taxes applied to shipping rate.
 	 * @param string  $method_id   Shipping method ID.
 	 * @param int     $instance_id Shipping instance ID.
-	 * @param string  $tax_status  Tax status.
 	 */
-	public function __construct( $id = '', $label = '', $cost = 0, $taxes = array(), $method_id = '', $instance_id = 0, $tax_status = 'taxable' ) {
+	public function __construct( $id = '', $label = '', $cost = 0, $taxes = array(), $method_id = '', $instance_id = 0 ) {
 		$this->set_id( $id );
 		$this->set_label( $label );
 		$this->set_cost( $cost );
 		$this->set_taxes( $taxes );
 		$this->set_method_id( $method_id );
 		$this->set_instance_id( $instance_id );
-		$this->set_tax_status( $tax_status );
 	}
 
 	/**
@@ -168,18 +165,6 @@ class WC_Shipping_Rate {
 	}
 
 	/**
-	 * Set tax status.
-	 *
-	 * @since 9.6.0
-	 * @param string $value Tax status.
-	 */
-	public function set_tax_status( $value ) {
-		if ( in_array( $value, array( 'taxable', 'none' ), true ) ) {
-			$this->data['tax_status'] = $value;
-		}
-	}
-
-	/**
 	 * Get ID for the rate. This is usually a combination of the method and instance IDs.
 	 *
 	 * @since 3.2.0
@@ -241,27 +226,10 @@ class WC_Shipping_Rate {
 	/**
 	 * Get shipping tax.
 	 *
-	 * @return float
+	 * @return array
 	 */
 	public function get_shipping_tax() {
-		return apply_filters( 'woocommerce_get_shipping_tax', count( $this->taxes ) > 0 && ! WC()->customer->get_is_vat_exempt() ? (float) array_sum( $this->taxes ) : 0.0, $this );
-	}
-
-
-	/**
-	 * Get tax status.
-	 *
-	 * @return string
-	 */
-	public function get_tax_status() {
-		/**
-		 * Filter to allow tax status to be overridden for a shipping rate.
-		 *
-		 * @since 9.9.0
-		 * @param string $tax_status Tax status.
-		 * @param WC_Shipping_Rate $this Shipping rate object.
-		 */
-		return apply_filters( 'woocommerce_shipping_rate_tax_status', $this->data['tax_status'], $this );
+		return apply_filters( 'woocommerce_get_shipping_tax', count( $this->taxes ) > 0 && ! WC()->customer->get_is_vat_exempt() ? array_sum( $this->taxes ) : 0, $this );
 	}
 
 	/**

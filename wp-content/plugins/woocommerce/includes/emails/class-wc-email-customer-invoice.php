@@ -5,8 +5,6 @@
  * @package WooCommerce\Emails
  */
 
-use Automattic\WooCommerce\Enums\OrderStatus;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -14,11 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'WC_Email_Customer_Invoice', false ) ) :
 
 	/**
-	 * Order details email.
+	 * Customer Invoice.
 	 *
-	 * An email sent to the customer via admin, that summarizes the details of their order. This was
-	 * historically referred to as the 'invoice', and for backwards compatibility reasons that is still
-	 * reflected in the class name (although on a user-level we have moved away from that nomenclature).
+	 * An email sent to the customer via admin.
 	 *
 	 * @class       WC_Email_Customer_Invoice
 	 * @version     3.5.0
@@ -33,8 +29,8 @@ if ( ! class_exists( 'WC_Email_Customer_Invoice', false ) ) :
 		public function __construct() {
 			$this->id             = 'customer_invoice';
 			$this->customer_email = true;
-			$this->title          = __( 'Order details', 'woocommerce' );
-			$this->description    = __( 'Order detail emails can be sent to customers containing their order information and payment links.', 'woocommerce' );
+			$this->title          = __( 'Customer invoice / Order details', 'woocommerce' );
+			$this->description    = __( 'Customer invoice emails can be sent to customers containing their order information and payment links.', 'woocommerce' );
 			$this->template_html  = 'emails/customer-invoice.php';
 			$this->template_plain = 'emails/plain/customer-invoice.php';
 			$this->placeholders   = array(
@@ -56,7 +52,11 @@ if ( ! class_exists( 'WC_Email_Customer_Invoice', false ) ) :
 		 * @return string
 		 */
 		public function get_default_subject( $paid = false ) {
-			return __( 'Details for order #{order_number} on {site_title}', 'woocommerce' );
+			if ( $paid ) {
+				return __( 'Invoice for order #{order_number} on {site_title}', 'woocommerce' );
+			} else {
+				return __( 'Your latest {site_title} invoice', 'woocommerce' );
+			}
 		}
 
 		/**
@@ -67,7 +67,11 @@ if ( ! class_exists( 'WC_Email_Customer_Invoice', false ) ) :
 		 * @return string
 		 */
 		public function get_default_heading( $paid = false ) {
-			return __( 'Details for order #{order_number}', 'woocommerce' );
+			if ( $paid ) {
+				return __( 'Invoice for order #{order_number}', 'woocommerce' );
+			} else {
+				return __( 'Your invoice for order #{order_number}', 'woocommerce' );
+			}
 		}
 
 		/**
@@ -76,7 +80,7 @@ if ( ! class_exists( 'WC_Email_Customer_Invoice', false ) ) :
 		 * @return string
 		 */
 		public function get_subject() {
-			if ( $this->object->has_status( array( OrderStatus::COMPLETED, OrderStatus::PROCESSING ) ) ) {
+			if ( $this->object->has_status( array( 'completed', 'processing' ) ) ) {
 				$subject = $this->get_option( 'subject_paid', $this->get_default_subject( true ) );
 
 				return apply_filters( 'woocommerce_email_subject_customer_invoice_paid', $this->format_string( $subject ), $this->object, $this );

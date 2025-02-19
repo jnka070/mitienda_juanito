@@ -360,10 +360,7 @@ abstract class WC_CSV_Exporter {
 	 * Additionally, Excel exposes the ability to launch arbitrary commands through
 	 * the DDE protocol.
 	 *
-	 * Number values are not escaped since a pure numeric value cannot form a valid formula to be injected.
-	 * This preserves negative numeric values (e.g. `-42`) as numbers in the CSV output.
-	 *
-	 * @see https://owasp.org/www-community/attacks/CSV_Injection
+	 * @see http://www.contextis.com/resources/blog/comma-separated-vulnerabilities/
 	 * @see https://hackerone.com/reports/72785
 	 *
 	 * @since 3.1.0
@@ -371,14 +368,7 @@ abstract class WC_CSV_Exporter {
 	 * @return string
 	 */
 	public function escape_data( $data ) {
-		// 0x09: Tab (\t)
-		// 0x0d: Carriage Return (\r)
-		$active_content_triggers = array( '=', '+', '-', '@', chr( 0x09 ), chr( 0x0d ) );
-
-		// Don't escape pure numeric values since they cannot form a valid formula to be injected.
-		if ( is_int( $data ) || is_float( $data ) ) {
-			return $data;
-		}
+		$active_content_triggers = array( '=', '+', '-', '@' );
 
 		if ( in_array( mb_substr( $data, 0, 1 ), $active_content_triggers, true ) ) {
 			$data = "'" . $data;
@@ -408,10 +398,8 @@ abstract class WC_CSV_Exporter {
 		$use_mb = function_exists( 'mb_convert_encoding' );
 
 		if ( $use_mb ) {
-			$is_valid_utf_8 = mb_check_encoding( $data, 'UTF-8' );
-			if ( ! $is_valid_utf_8 ) {
-				$data = mb_convert_encoding( $data, 'UTF-8', 'ISO-8859-1' );
-			}
+			$encoding = mb_detect_encoding( $data, 'UTF-8, ISO-8859-1', true );
+			$data     = 'UTF-8' === $encoding ? $data : utf8_encode( $data );
 		}
 
 		return $this->escape_data( $data );
@@ -479,7 +467,7 @@ abstract class WC_CSV_Exporter {
 		$values_to_implode = array();
 
 		foreach ( $values as $value ) {
-			$value               = (string) is_scalar( $value ) ? html_entity_decode( $value, ENT_QUOTES ) : '';
+			$value               = (string) is_scalar( $value ) ? $value : '';
 			$values_to_implode[] = str_replace( ',', '\\,', $value );
 		}
 
@@ -487,13 +475,33 @@ abstract class WC_CSV_Exporter {
 	}
 
 	/**
-	 * Write to the CSV file.
+	 * Write to the CSV file, ensuring escaping works across versions of
+	 * PHP.
 	 *
+	 * PHP 5.5.4 uses '\' as the default escape character. This is not RFC-4180 compliant.
+	 * \0 disables the escape character.
+	 *
+	 * @see https://bugs.php.net/bug.php?id=43225
+	 * @see https://bugs.php.net/bug.php?id=50686
+	 * @see https://github.com/woocommerce/woocommerce/issues/19514
 	 * @since 3.4.0
+	 * @see https://github.com/woocommerce/woocommerce/issues/24579
+	 * @since 3.9.0
 	 * @param resource $buffer Resource we are writing to.
 	 * @param array    $export_row Row to export.
 	 */
 	protected function fputcsv( $buffer, $export_row ) {
-		fputcsv( $buffer, $export_row, $this->get_delimiter(), '"', "\0" ); // @codingStandardsIgnoreLine
+
+		if ( version_compare( PHP_VERSION, '5.5.4', '<' ) ) {
+			ob_start();
+			$temp = fopen( 'php://output', 'w' ); // @codingStandardsIgnoreLine
+    		fputcsv( $temp, $export_row, $this->get_delimiter(), '"' ); // @codingStandardsIgnoreLine
+			fclose( $temp ); // @codingStandardsIgnoreLine
+			$row = ob_get_clean();
+			$row = str_replace( '\\"', '\\""', $row );
+			fwrite( $buffer, $row ); // @codingStandardsIgnoreLine
+		} else {
+			fputcsv( $buffer, $export_row, $this->get_delimiter(), '"', "\0" ); // @codingStandardsIgnoreLine
+		}
 	}
 }

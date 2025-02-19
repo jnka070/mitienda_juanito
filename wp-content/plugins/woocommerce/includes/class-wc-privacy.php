@@ -6,8 +6,6 @@
  * @package WooCommerce\Classes
  */
 
-use Automattic\WooCommerce\Enums\OrderInternalStatus;
-
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WC_Privacy_Background_Process', false ) ) {
@@ -33,12 +31,12 @@ class WC_Privacy extends WC_Abstract_Privacy {
 		parent::__construct();
 
 		// Initialize data exporters and erasers.
-		add_action( 'init', array( $this, 'register_erasers_exporters' ) );
+		add_action( 'plugins_loaded', array( $this, 'register_erasers_exporters' ) );
 
 		// Cleanup orders daily - this is a callback on a daily cron event.
 		add_action( 'woocommerce_cleanup_personal_data', array( $this, 'queue_cleanup_personal_data' ) );
 
-		// Handles custom anonymization types not included in core.
+		// Handles custom anonomization types not included in core.
 		add_filter( 'wp_privacy_anonymize_data', array( $this, 'anonymize_custom_data_types' ), 10, 3 );
 
 		// When this is fired, data is removed in a given order. Called from bulk actions.
@@ -188,7 +186,7 @@ class WC_Privacy extends WC_Abstract_Privacy {
 				array(
 					'date_created' => '<' . strtotime( '-' . $option['number'] . ' ' . $option['unit'] ),
 					'limit'        => $limit, // Batches of 20.
-					'status'       => OrderInternalStatus::PENDING,
+					'status'       => 'wc-pending',
 					'type'         => 'shop_order',
 				)
 			)
@@ -215,7 +213,7 @@ class WC_Privacy extends WC_Abstract_Privacy {
 				array(
 					'date_created' => '<' . strtotime( '-' . $option['number'] . ' ' . $option['unit'] ),
 					'limit'        => $limit, // Batches of 20.
-					'status'       => OrderInternalStatus::FAILED,
+					'status'       => 'wc-failed',
 					'type'         => 'shop_order',
 				)
 			)
@@ -242,7 +240,7 @@ class WC_Privacy extends WC_Abstract_Privacy {
 				array(
 					'date_created' => '<' . strtotime( '-' . $option['number'] . ' ' . $option['unit'] ),
 					'limit'        => $limit, // Batches of 20.
-					'status'       => OrderInternalStatus::CANCELLED,
+					'status'       => 'wc-cancelled',
 					'type'         => 'shop_order',
 				)
 			)
@@ -290,7 +288,7 @@ class WC_Privacy extends WC_Abstract_Privacy {
 				array(
 					'date_created' => '<' . strtotime( '-' . $option['number'] . ' ' . $option['unit'] ),
 					'limit'        => $limit, // Batches of 20.
-					'status'       => OrderInternalStatus::COMPLETED,
+					'status'       => 'wc-completed',
 					'anonymized'   => false,
 					'type'         => 'shop_order',
 				)
@@ -383,14 +381,7 @@ class WC_Privacy extends WC_Abstract_Privacy {
 			}
 
 			foreach ( $user_ids as $user_id ) {
-				wp_delete_user( $user_id, 0 );
-				wc_get_logger()->info(
-					sprintf(
-						/* translators: %d user ID. */
-						__( "User #%d was deleted by WooCommerce in accordance with the site's personal data retention settings. Any content belonging to that user has been retained but unassigned.", 'woocommerce' ),
-						$user_id
-					)
-				);
+				wp_delete_user( $user_id );
 				$count ++;
 			}
 		}

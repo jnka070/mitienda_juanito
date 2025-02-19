@@ -60,8 +60,7 @@
 			$class_html = $current_filter === $key ? 'class="current"' : '';
 			?>
 			<li>
-				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<a <?php echo $class_html; ?> href="<?php echo esc_url( $url ); ?>">
+				<a <?php echo esc_html( $class_html ); ?> href="<?php echo esc_url( $url ); ?>">
 					<?php echo esc_html( $label ); ?>
 					<span class="count">(<?php echo absint( $counts[ $key ] ); ?>)</span>
 				</a>
@@ -76,7 +75,7 @@
 				<tr class="wp-list-table__row is-ext-header">
 					<td class="wp-list-table__ext-details">
 						<div class="wp-list-table__ext-title">
-							<a href="<?php echo esc_url( WC_Helper::add_utm_params_to_url_for_subscription_link( $subscription['product_url'], 'product-name' ) ); ?>" target="_blank">
+							<a href="<?php echo esc_url( $subscription['product_url'] ); ?>" target="_blank">
 								<?php echo esc_html( $subscription['product_name'] ); ?>
 							</a>
 						</div>
@@ -207,9 +206,7 @@
 					<tr class="wp-list-table__row is-ext-header">
 						<td class="wp-list-table__ext-details color-bar autorenews">
 							<div class="wp-list-table__ext-title">
-								<a href="<?php echo esc_url( WC_Helper::add_utm_params_to_url_for_subscription_link( $data['_product_url'], 'product-name' ) ); ?>" target="_blank">
-									<?php echo esc_html( $data['Name'] ); ?>
-								</a>
+								<a href="<?php echo esc_url( $data['_product_url'] ); ?>" target="_blank"><?php echo esc_html( $data['Name'] ); ?></a>
 							</div>
 							<div class="wp-list-table__ext-description">
 							</div>

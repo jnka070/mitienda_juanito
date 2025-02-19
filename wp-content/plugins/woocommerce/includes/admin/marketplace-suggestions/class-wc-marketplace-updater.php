@@ -44,12 +44,7 @@ class WC_Marketplace_Updater {
 		$data['updated'] = time();
 
 		$url     = 'https://woocommerce.com/wp-json/wccom/marketplace-suggestions/1.0/suggestions.json';
-		$request = wp_safe_remote_get(
-			$url,
-			array(
-				'user-agent' => 'WooCommerce/' . WC()->version . '; ' . get_bloginfo( 'url' ),
-			)
-		);
+		$request = wp_safe_remote_get( $url );
 
 		if ( is_wp_error( $request ) ) {
 			self::retry();
@@ -73,7 +68,7 @@ class WC_Marketplace_Updater {
 	}
 
 	/**
-	 * Used when an error has occurred when fetching suggestions.
+	 * Used when an error has occured when fetching suggestions.
 	 * Re-schedules the job earlier than the main weekly one.
 	 */
 	public static function retry() {

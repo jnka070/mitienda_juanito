@@ -18,9 +18,6 @@ use Automattic\WooCommerce\Vendor\League\Container\ServiceProvider\AbstractServi
  * - The `add_with_auto_arguments` method that allows to register classes without having to specify the injection method arguments.
  * - The `share_with_auto_arguments` method, sibling of the above.
  * - Convenience `add` and `share` methods that are just proxies for the same methods in `$this->getContainer()`.
- *
- * Note that `AbstractInterfaceServiceProvider` likely serves as a better base class for service providers
- * tasked with registering classes that implement interfaces.
  */
 abstract class AbstractServiceProvider extends BaseServiceProvider {
 
@@ -76,6 +73,11 @@ abstract class AbstractServiceProvider extends BaseServiceProvider {
 	 * @return \ReflectionClass|null The class of the parameter, or null if it hasn't any.
 	 */
 	private function get_class( \ReflectionParameter $parameter ) {
+		// TODO: Remove this 'if' block once minimum PHP version for WooCommerce is bumped to at least 7.1.
+		if ( version_compare( PHP_VERSION, '7.1', '<' ) ) {
+			return $parameter->getClass();
+		}
+
 		return $parameter->getType() && ! $parameter->getType()->isBuiltin()
 			? new \ReflectionClass( $parameter->getType()->getName() )
 			: null;
@@ -93,26 +95,28 @@ abstract class AbstractServiceProvider extends BaseServiceProvider {
 	 */
 	private function reflect_class_or_callable( string $class_name, $concrete ) {
 		if ( ! isset( $concrete ) || is_string( $concrete ) && class_exists( $concrete ) ) {
-			$class = $concrete ?? $class_name;
+			try {
+				$class  = $concrete ?? $class_name;
+				$method = new \ReflectionMethod( $class, Definition::INJECTION_METHOD );
+				if ( ! isset( $method ) ) {
+					return null;
+				}
 
-			if ( ! method_exists( $class, Definition::INJECTION_METHOD ) ) {
+				$missing_modifiers = array();
+				if ( ! $method->isFinal() ) {
+					$missing_modifiers[] = 'final';
+				}
+				if ( ! $method->isPublic() ) {
+					$missing_modifiers[] = 'public';
+				}
+				if ( ! empty( $missing_modifiers ) ) {
+					throw new ContainerException( "Method '" . Definition::INJECTION_METHOD . "' of class '$class' isn't '" . implode( ' ', $missing_modifiers ) . "', instances can't be created." );
+				}
+
+				return $method;
+			} catch ( \ReflectionException $ex ) {
 				return null;
 			}
-
-			$method = new \ReflectionMethod( $class, Definition::INJECTION_METHOD );
-
-			$missing_modifiers = array();
-			if ( ! $method->isFinal() ) {
-				$missing_modifiers[] = 'final';
-			}
-			if ( ! $method->isPublic() ) {
-				$missing_modifiers[] = 'public';
-			}
-			if ( ! empty( $missing_modifiers ) ) {
-				throw new ContainerException( "Method '" . Definition::INJECTION_METHOD . "' of class '$class' isn't '" . implode( ' ', $missing_modifiers ) . "', instances can't be created." );
-			}
-
-			return $method;
 		} elseif ( is_callable( $concrete ) ) {
 			try {
 				return new \ReflectionFunction( $concrete );
@@ -150,7 +154,7 @@ abstract class AbstractServiceProvider extends BaseServiceProvider {
 	 *
 	 * @return DefinitionInterface The generated container definition.
 	 */
-	protected function add( string $id, $concrete = null, ?bool $shared = null ) : DefinitionInterface {
+	protected function add( string $id, $concrete = null, bool $shared = null ) : DefinitionInterface {
 		return $this->getContainer()->add( $id, $concrete, $shared );
 	}
 

@@ -416,19 +416,8 @@ function wc_locate_template( $template_name, $template_path = '', $default_path 
 		}
 	}
 
-	/**
-	 * Filter to customize the path of a given WooCommerce template.
-	 *
-	 * Note: the $default_path argument was added in WooCommerce 9.5.0.
-	 *
-	 * @param string $template Full file path of the template.
-	 * @param string $template_name Template name.
-	 * @param string $template_path Template path.
-	 * @param string $template_path Default WooCommerce templates path.
-	 *
-	 * @since 9.5.0 $default_path argument added.
-	 */
-	return apply_filters( 'woocommerce_locate_template', $template, $template_name, $template_path, $default_path );
+	// Return what we found.
+	return apply_filters( 'woocommerce_locate_template', $template, $template_name, $template_path );
 }
 
 /**
@@ -468,15 +457,6 @@ function wc_clear_template_cache() {
 }
 
 /**
- * Clear the system status theme info cache.
- *
- * @since 9.4.0
- */
-function wc_clear_system_status_theme_info_cache() {
-	delete_transient( 'wc_system_status_theme_info' );
-}
-
-/**
  * Get Base Currency Code.
  *
  * @return string
@@ -488,7 +468,7 @@ function get_woocommerce_currency() {
 /**
  * Get full list of currency codes.
  *
- * Currency symbols and names should follow the Unicode CLDR recommendation (https://cldr.unicode.org/translation/currency-names-and-symbols)
+ * Currency symbols and names should follow the Unicode CLDR recommendation (http://cldr.unicode.org/translation/currency-names)
  *
  * @return array
  */
@@ -651,8 +631,8 @@ function get_woocommerce_currencies() {
 					'USD' => __( 'United States (US) dollar', 'woocommerce' ),
 					'UYU' => __( 'Uruguayan peso', 'woocommerce' ),
 					'UZS' => __( 'Uzbekistani som', 'woocommerce' ),
-					'VEF' => __( 'Venezuelan bol&iacute;var (2008–2018)', 'woocommerce' ),
-					'VES' => __( 'Venezuelan bol&iacute;var', 'woocommerce' ),
+					'VEF' => __( 'Venezuelan bol&iacute;var', 'woocommerce' ),
+					'VES' => __( 'Bol&iacute;var soberano', 'woocommerce' ),
 					'VND' => __( 'Vietnamese &#x111;&#x1ed3;ng', 'woocommerce' ),
 					'VUV' => __( 'Vanuatu vatu', 'woocommerce' ),
 					'WST' => __( 'Samoan t&#x101;l&#x101;', 'woocommerce' ),
@@ -674,7 +654,7 @@ function get_woocommerce_currencies() {
 /**
  * Get all available Currency symbols.
  *
- * Currency symbols and names should follow the Unicode CLDR recommendation (https://cldr.unicode.org/translation/currency-names-and-symbols)
+ * Currency symbols and names should follow the Unicode CLDR recommendation (http://cldr.unicode.org/translation/currency-names)
  *
  * @since 4.1.0
  * @return array
@@ -693,7 +673,7 @@ function get_woocommerce_currency_symbols() {
 			'ARS' => '&#36;',
 			'AUD' => '&#36;',
 			'AWG' => 'Afl.',
-			'AZN' => '&#8380;',
+			'AZN' => 'AZN',
 			'BAM' => 'KM',
 			'BBD' => '&#36;',
 			'BDT' => '&#2547;&nbsp;',
@@ -723,7 +703,7 @@ function get_woocommerce_currency_symbols() {
 			'CVE' => '&#36;',
 			'CZK' => '&#75;&#269;',
 			'DJF' => 'Fr',
-			'DKK' => 'kr.',
+			'DKK' => 'DKK',
 			'DOP' => 'RD&#36;',
 			'DZD' => '&#x62f;.&#x62c;',
 			'EGP' => 'EGP',
@@ -772,7 +752,7 @@ function get_woocommerce_currency_symbols() {
 			'LKR' => '&#xdbb;&#xdd4;',
 			'LRD' => '&#36;',
 			'LSL' => 'L',
-			'LYD' => '&#x62f;.&#x644;',
+			'LYD' => '&#x644;.&#x62f;',
 			'MAD' => '&#x62f;.&#x645;.',
 			'MDL' => 'MDL',
 			'MGA' => 'Ar',
@@ -837,14 +817,14 @@ function get_woocommerce_currency_symbols() {
 			'UYU' => '&#36;',
 			'UZS' => 'UZS',
 			'VEF' => 'Bs F',
-			'VES' => 'Bs.',
+			'VES' => 'Bs.S',
 			'VND' => '&#8363;',
 			'VUV' => 'Vt',
 			'WST' => 'T',
 			'XAF' => 'CFA',
 			'XCD' => '&#36;',
 			'XOF' => 'CFA',
-			'XPF' => 'XPF',
+			'XPF' => 'Fr',
 			'YER' => '&#xfdfc;',
 			'ZAR' => '&#82;',
 			'ZMW' => 'ZK',
@@ -857,7 +837,7 @@ function get_woocommerce_currency_symbols() {
 /**
  * Get Currency symbol.
  *
- * Currency symbols and names should follow the Unicode CLDR recommendation (https://cldr.unicode.org/translation/currency-names-and-symbols)
+ * Currency symbols and names should follow the Unicode CLDR recommendation (http://cldr.unicode.org/translation/currency-names)
  *
  * @param string $currency Currency. (default: '').
  * @return string
@@ -947,7 +927,7 @@ function wc_get_theme_support( $prop = '', $default = null ) {
  */
 function wc_get_image_size( $image_size ) {
 	$cache_key = 'size-' . ( is_array( $image_size ) ? implode( '-', $image_size ) : $image_size );
-	$size      = ! is_customize_preview() ? wp_cache_get( $cache_key, 'woocommerce' ) : false;
+	$size      = wp_cache_get( $cache_key, 'woocommerce' );
 
 	if ( $size ) {
 		return $size;
@@ -968,6 +948,15 @@ function wc_get_image_size( $image_size ) {
 		$image_size = $size['width'] . '_' . $size['height'];
 	} else {
 		$image_size = str_replace( 'woocommerce_', '', $image_size );
+
+		// Legacy size mapping.
+		if ( 'shop_single' === $image_size ) {
+			$image_size = 'single';
+		} elseif ( 'shop_catalog' === $image_size ) {
+			$image_size = 'thumbnail';
+		} elseif ( 'shop_thumbnail' === $image_size ) {
+			$image_size = 'gallery_thumbnail';
+		}
 
 		if ( 'single' === $image_size ) {
 			$size['width']  = absint( wc_get_theme_support( 'single_image_width', get_option( 'woocommerce_single_image_width', 600 ) ) );
@@ -1003,11 +992,8 @@ function wc_get_image_size( $image_size ) {
 
 	$size = apply_filters( 'woocommerce_get_image_size_' . $image_size, $size );
 
-	if ( is_customize_preview() ) {
-		wp_cache_delete( $cache_key, 'woocommerce' );
-	} else {
-		wp_cache_set( $cache_key, $size, 'woocommerce' );
-	}
+	wp_cache_set( $cache_key, $size, 'woocommerce' );
+
 	return $size;
 }
 
@@ -1062,59 +1048,12 @@ function wc_print_js() {
  * @param  bool    $httponly Whether the cookie is only accessible over HTTP, not scripting languages like JavaScript. @since 3.6.0.
  */
 function wc_setcookie( $name, $value, $expire = 0, $secure = false, $httponly = false ) {
-	/**
-	 * Controls whether the cookie should be set via wc_setcookie().
-	 *
-	 * @since 6.3.0
-	 *
-	 * @param bool    $set_cookie_enabled If wc_setcookie() should set the cookie.
-	 * @param string  $name               Cookie name.
-	 * @param string  $value              Cookie value.
-	 * @param integer $expire             When the cookie should expire.
-	 * @param bool    $secure             If the cookie should only be served over HTTPS.
-	 */
-	if ( ! apply_filters( 'woocommerce_set_cookie_enabled', true, $name, $value, $expire, $secure ) ) {
+	if ( ! apply_filters( 'woocommerce_set_cookie_enabled', true, $name ,$value, $expire, $secure ) ) {
 		return;
 	}
 
 	if ( ! headers_sent() ) {
-		/**
-		 * Controls the options to be specified when setting the cookie.
-		 *
-		 * @see   https://www.php.net/manual/en/function.setcookie.php
-		 * @since 6.7.0
-		 *
-		 * @param array  $cookie_options Cookie options.
-		 * @param string $name           Cookie name.
-		 * @param string $value          Cookie value.
-		 */
-		$options = apply_filters(
-			'woocommerce_set_cookie_options',
-			array(
-				'expires'  => $expire,
-				'secure'   => $secure,
-				'path'     => COOKIEPATH ? COOKIEPATH : '/',
-				'domain'   => COOKIE_DOMAIN,
-				/**
-				 * Controls whether the cookie should only be accessible via the HTTP protocol, or if it should also be
-				 * accessible to Javascript.
-				 *
-				 * @see   https://www.php.net/manual/en/function.setcookie.php
-				 * @since 3.3.0
-				 *
-				 * @param bool   $httponly If the cookie should only be accessible via the HTTP protocol.
-				 * @param string $name     Cookie name.
-				 * @param string $value    Cookie value.
-				 * @param int    $expire   When the cookie should expire.
-				 * @param bool   $secure   If the cookie should only be served over HTTPS.
-				 */
-				'httponly' => apply_filters( 'woocommerce_cookie_httponly', $httponly, $name, $value, $expire, $secure ),
-			),
-			$name,
-			$value
-		);
-
-		setcookie( $name, $value, $options );
+		setcookie( $name, $value, $expire, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, $secure, apply_filters( 'woocommerce_cookie_httponly', $httponly, $name, $value, $expire, $secure ) );
 	} elseif ( Constants::is_true( 'WP_DEBUG' ) ) {
 		headers_sent( $file, $line );
 		trigger_error( "{$name} cookie cannot be set - headers already sent by {$file} on line {$line}", E_USER_NOTICE ); // @codingStandardsIgnoreLine
@@ -1122,27 +1061,50 @@ function wc_setcookie( $name, $value, $expire = 0, $secure = false, $httponly = 
 }
 
 /**
- * Get the URL to the WooCommerce Legacy REST API.
- *
- * Note that as of WooCommerce 9.0 the WooCommerce Legacy REST API has been moved to a dedicated extension,
- * and the implementation of its root endpoint in WooCommerce core is now just a stub that will always return an error.
- * See the setup_legacy_api_stub method in includes/class-woocommerce.php and:
- * https://developer.woocommerce.com/2023/10/03/the-legacy-rest-api-will-move-to-a-dedicated-extension-in-woocommerce-9-0/
- *
- * @deprecated 9.0.0 The Legacy REST API has been removed from WooCommerce core.
+ * Get the URL to the WooCommerce REST API.
  *
  * @since 2.1
  * @param string $path an endpoint to include in the URL.
  * @return string the URL.
  */
 function get_woocommerce_api_url( $path ) {
-	$url = get_home_url( null, 'wc-api/v3/', is_ssl() ? 'https' : 'http' );
+	if ( Constants::is_defined( 'WC_API_REQUEST_VERSION' ) ) {
+		$version = Constants::get_constant( 'WC_API_REQUEST_VERSION' );
+	} else {
+		$version = substr( WC_API::VERSION, 0, 1 );
+	}
+
+	$url = get_home_url( null, "wc-api/v{$version}/", is_ssl() ? 'https' : 'http' );
 
 	if ( ! empty( $path ) && is_string( $path ) ) {
 		$url .= ltrim( $path, '/' );
 	}
 
 	return $url;
+}
+
+/**
+ * Get a log file path.
+ *
+ * @since 2.2
+ *
+ * @param string $handle name.
+ * @return string the log file path.
+ */
+function wc_get_log_file_path( $handle ) {
+	return WC_Log_Handler_File::get_log_file_path( $handle );
+}
+
+/**
+ * Get a log file name.
+ *
+ * @since 3.3
+ *
+ * @param string $handle Name.
+ * @return string The log file name.
+ */
+function wc_get_log_file_name( $handle ) {
+	return WC_Log_Handler_File::get_log_file_name( $handle );
 }
 
 /**
@@ -1318,50 +1280,6 @@ function wc_get_base_location() {
 }
 
 /**
- * Uses geolocation to get the customer country and state only if they are valid values.
- *
- * @since 9.5.0
- * @param array $fallback Fallback location.
- * @return array
- */
-function wc_get_customer_geolocation( $fallback = array(
-	'country' => '',
-	'state'   => '',
-) ) {
-	$ua = wc_get_user_agent();
-
-	// Exclude common bots from geolocation by user agent.
-	if ( stripos( $ua, 'bot' ) !== false || stripos( $ua, 'spider' ) !== false || stripos( $ua, 'crawl' ) !== false ) {
-		return $fallback;
-	}
-
-	$geolocation = WC_Geolocation::geolocate_ip( '', true, false );
-
-	if ( empty( $geolocation['country'] ) ) {
-		return $fallback;
-	}
-
-	// Ensure geolocation is valid.
-	$allowed_countries = WC()->countries->get_allowed_countries();
-
-	if ( ! isset( $allowed_countries[ $geolocation['country'] ] ) ) {
-		return $fallback;
-	}
-
-	$allowed_states = WC()->countries->get_allowed_country_states();
-	$country_states = $allowed_states[ $geolocation['country'] ] ?? array();
-
-	if ( $country_states && ! isset( $country_states[ $geolocation['state'] ] ) ) {
-		$geolocation['state'] = '';
-	}
-
-	return array(
-		'country' => $geolocation['country'],
-		'state'   => $geolocation['state'],
-	);
-}
-
-/**
  * Get the customer's default location.
  *
  * Filtered, and set to base location or left blank. If cache-busting,
@@ -1372,46 +1290,32 @@ function wc_get_customer_geolocation( $fallback = array(
  */
 function wc_get_customer_default_location() {
 	$set_default_location_to = get_option( 'woocommerce_default_customer_address', 'base' );
+	$default_location        = '' === $set_default_location_to ? '' : get_option( 'woocommerce_default_country', 'US:CA' );
+	$location                = wc_format_country_state_string( apply_filters( 'woocommerce_customer_default_location', $default_location ) );
 
-	// Unless the location should be blank, use the base location as the default.
-	if ( '' !== $set_default_location_to ) {
-		$default_location_string = get_option( 'woocommerce_default_country', 'US:CA' );
+	// Geolocation takes priority if used and if geolocation is possible.
+	if ( 'geolocation' === $set_default_location_to || 'geolocation_ajax' === $set_default_location_to ) {
+		$ua = wc_get_user_agent();
+
+		// Exclude common bots from geolocation by user agent.
+		if ( ! stristr( $ua, 'bot' ) && ! stristr( $ua, 'spider' ) && ! stristr( $ua, 'crawl' ) ) {
+			$geolocation = WC_Geolocation::geolocate_ip( '', true, false );
+
+			if ( ! empty( $geolocation['country'] ) ) {
+				$location = $geolocation;
+			}
+		}
 	}
 
-	$default_location = wc_format_country_state_string(
-		/**
-		 * Filter the customer default location before geolocation.
-		 *
-		 * @since 2.3.0
-		 * @param string $default_location_string The default location.
-		 * @return string
-		 */
-		apply_filters( 'woocommerce_customer_default_location', $default_location_string ?? '' )
-	);
+	// Once we have a location, ensure it's valid, otherwise fallback to a valid location.
+	$allowed_country_codes = WC()->countries->get_allowed_countries();
 
-	// Ensure defaults are valid.
-	$allowed_countries = WC()->countries->get_allowed_countries();
-
-	if ( ! in_array( $default_location['country'], array_keys( $allowed_countries ), true ) ) {
-		$default_location = array(
-			'country' => '',
-			'state'   => '',
-		);
+	if ( ! empty( $location['country'] ) && ! array_key_exists( $location['country'], $allowed_country_codes ) ) {
+		$location['country'] = current( array_keys( $allowed_country_codes ) );
+		$location['state']   = '';
 	}
 
-	// Geolocation takes priority if geolocation is possible.
-	if ( in_array( $set_default_location_to, array( 'geolocation', 'geolocation_ajax' ), true ) ) {
-		$default_location = wc_get_customer_geolocation( $default_location );
-	}
-
-	/**
-	 * Filter the customer default location after geolocation.
-	 *
-	 * @since 2.3.0
-	 * @param array $customer_location The customer location with keys 'country' and 'state'.
-	 * @return array
-	 */
-	return apply_filters( 'woocommerce_customer_default_location_array', $default_location );
+	return apply_filters( 'woocommerce_customer_default_location_array', $location );
 }
 
 /**
@@ -1547,32 +1451,12 @@ function wc_transaction_query( $type = 'start', $force = false ) {
 /**
  * Gets the url to the cart page.
  *
- * @since 2.5.0
- * @since 9.3.0 To support shortcodes on other pages besides the main cart page, this returns the current URL if it is the cart page.
+ * @since  2.5.0
  *
  * @return string Url to cart page
  */
 function wc_get_cart_url() {
-	global $post;
-
-	// We don't use is_cart() here because that also checks for a defined constant. We are only interested in the page.
-	$page_id      = wc_get_page_id( 'cart' );
-	$is_cart_page = $page_id && is_page( $page_id );
-
-	// If this isn't the cart page, but the page does contain the cart shortcode, we'll return the current page permalink.
-	if ( ! $is_cart_page && is_a( $post, 'WP_Post' ) && wc_post_content_has_shortcode( 'woocommerce_cart' ) ) {
-		$cart_url = get_permalink( $post->ID );
-	} else {
-		$cart_url = wc_get_page_permalink( 'cart' );
-	}
-
-	/**
-	 * Filter the cart URL.
-	 *
-	 * @since 2.5.0
-	 * @param string $cart_url Cart URL.
-	 */
-	return apply_filters( 'woocommerce_get_cart_url', $cart_url );
+	return apply_filters( 'woocommerce_get_cart_url', wc_get_page_permalink( 'cart' ) );
 }
 
 /**
@@ -1634,22 +1518,16 @@ function wc_get_credit_card_type_label( $type ) {
 	$labels = apply_filters(
 		'woocommerce_credit_card_type_labels',
 		array(
-			'mastercard'       => _x( 'MasterCard', 'Name of credit card', 'woocommerce' ),
-			'visa'             => _x( 'Visa', 'Name of credit card', 'woocommerce' ),
-			'discover'         => _x( 'Discover', 'Name of credit card', 'woocommerce' ),
-			'american express' => _x( 'American Express', 'Name of credit card', 'woocommerce' ),
-			'cartes bancaires' => _x( 'Cartes Bancaires', 'Name of credit card', 'woocommerce' ),
-			'diners'           => _x( 'Diners', 'Name of credit card', 'woocommerce' ),
-			'jcb'              => _x( 'JCB', 'Name of credit card', 'woocommerce' ),
+			'mastercard'       => __( 'MasterCard', 'woocommerce' ),
+			'visa'             => __( 'Visa', 'woocommerce' ),
+			'discover'         => __( 'Discover', 'woocommerce' ),
+			'american express' => __( 'American Express', 'woocommerce' ),
+			'diners'           => __( 'Diners', 'woocommerce' ),
+			'jcb'              => __( 'JCB', 'woocommerce' ),
 		)
 	);
 
-	/**
-	 * Fallback to title case, uppercasing the first letter of each word.
-	 *
-	 * @since 8.9.0
-	 */
-	return apply_filters( 'woocommerce_get_credit_card_type_label', ( array_key_exists( $type, $labels ) ? $labels[ $type ] : ucwords( $type ) ) );
+	return apply_filters( 'woocommerce_get_credit_card_type_label', ( array_key_exists( $type, $labels ) ? $labels[ $type ] : ucfirst( $type ) ) );
 }
 
 /**
@@ -1659,7 +1537,7 @@ function wc_get_credit_card_type_label( $type ) {
  * @param string $url   URL of the page to return to.
  */
 function wc_back_link( $label, $url ) {
-	echo '<small class="wc-admin-breadcrumb"><a href="' . esc_url( $url ) . '" aria-label="' . esc_attr( $label ) . '">&#x2934;&#xfe0e;</a></small>';
+	echo '<small class="wc-admin-breadcrumb"><a href="' . esc_url( $url ) . '" aria-label="' . esc_attr( $label ) . '">&#x2934;</a></small>';
 }
 
 /**
@@ -1673,26 +1551,12 @@ function wc_back_link( $label, $url ) {
  */
 function wc_help_tip( $tip, $allow_html = false ) {
 	if ( $allow_html ) {
-		$sanitized_tip = wc_sanitize_tooltip( $tip );
+		$tip = wc_sanitize_tooltip( $tip );
 	} else {
-		$sanitized_tip = esc_attr( $tip );
+		$tip = esc_attr( $tip );
 	}
 
-	$aria_label = wp_strip_all_tags( $tip );
-
-	/**
-	 * Filter the help tip.
-	 *
-	 * @since 7.7.0
-	 *
-	 * @param string $tip_html       Help tip HTML.
-	 * @param string $sanitized_tip  Sanitized help tip text.
-	 * @param string $tip            Original help tip text.
-	 * @param bool   $allow_html     Allow sanitized HTML if true or escape.
-	 *
-	 * @return string
-	 */
-	return apply_filters( 'wc_help_tip', '<span class="woocommerce-help-tip" tabindex="0" aria-label="' . esc_attr( $aria_label ) . '" data-tip="' . $sanitized_tip . '"></span>', $sanitized_tip, $tip, $allow_html );
+	return '<span class="woocommerce-help-tip" data-tip="' . $tip . '"></span>';
 }
 
 /**
@@ -1712,7 +1576,7 @@ function wc_get_wildcard_postcodes( $postcode, $country = '' ) {
 		$formatted_postcode . '*',
 	);
 
-	for ( $i = 0; $i < $length; $i++ ) {
+	for ( $i = 0; $i < $length; $i ++ ) {
 		$postcodes[] = ( function_exists( 'mb_substr' ) ? mb_substr( $formatted_postcode, 0, ( $i + 1 ) * -1 ) : substr( $formatted_postcode, 0, ( $i + 1 ) * -1 ) ) . '*';
 	}
 
@@ -1795,26 +1659,19 @@ function wc_get_shipping_method_count( $include_legacy = false, $enabled_only = 
 		return absint( $transient_value['value'] );
 	}
 
-	// Count activated methods that don't support shipping zones if $include_legacy is true.
-	$methods      = WC()->shipping()->get_shipping_methods();
-	$method_ids   = array();
-	$method_count = 0;
+	$where_clause = $enabled_only ? 'WHERE is_enabled=1' : '';
+	$method_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}woocommerce_shipping_zone_methods ${where_clause}" ) );
 
-	foreach ( $methods as $method ) {
-		$method_ids[] = $method->id;
+	if ( $include_legacy ) {
+		// Count activated methods that don't support shipping zones.
+		$methods = WC()->shipping()->get_shipping_methods();
 
-		if ( $include_legacy && isset( $method->enabled ) && 'yes' === $method->enabled && ! $method->supports( 'shipping-zones' ) ) {
-			++$method_count;
+		foreach ( $methods as $method ) {
+			if ( isset( $method->enabled ) && 'yes' === $method->enabled && ! $method->supports( 'shipping-zones' ) ) {
+				$method_count++;
+			}
 		}
 	}
-
-	// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
-	if ( $enabled_only ) {
-		$method_count = $method_count + absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}woocommerce_shipping_zone_methods WHERE is_enabled=1 AND method_id IN ('" . implode( "','", array_map( 'esc_sql', $method_ids ) ) . "')" ) );
-	} else {
-		$method_count = $method_count + absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}woocommerce_shipping_zone_methods WHERE method_id IN ('" . implode( "','", array_map( 'esc_sql', $method_ids ) ) . "')" ) );
-	}
-	// phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
 
 	$transient_value = array(
 		'version' => $transient_version,
@@ -1911,15 +1768,26 @@ function wc_uasort_comparison( $a, $b ) {
 }
 
 /**
- * Sort values based on ascii, useful for special chars in strings.
+ * Sort values based on ascii, usefull for special chars in strings.
  *
  * @param string $a First value.
  * @param string $b Second value.
  * @return int
  */
 function wc_ascii_uasort_comparison( $a, $b ) {
-	$a = remove_accents( $a );
-	$b = remove_accents( $b );
+	// 'setlocale' is required for compatibility with PHP 8.
+	// Without it, 'iconv' will return '?'s instead of transliterated characters.
+	$prev_locale = setlocale( LC_CTYPE, 0 );
+	setlocale( LC_ALL, 'C.UTF-8' );
+
+	// phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+	if ( function_exists( 'iconv' ) && defined( 'ICONV_IMPL' ) && @strcasecmp( ICONV_IMPL, 'unknown' ) !== 0 ) {
+		$a = @iconv( 'UTF-8', 'ASCII//TRANSLIT//IGNORE', $a );
+		$b = @iconv( 'UTF-8', 'ASCII//TRANSLIT//IGNORE', $b );
+	}
+	// phpcs:enable WordPress.PHP.NoSilencedErrors.Discouraged
+
+	setlocale( LC_ALL, $prev_locale );
 	return strcmp( $a, $b );
 }
 
@@ -1995,42 +1863,28 @@ function wc_get_tax_rounding_mode() {
 
 /**
  * Get rounding precision for internal WC calculations.
- * Will return the value of wc_get_price_decimals increased by 2 decimals, with WC_ROUNDING_PRECISION being the minimum.
+ * Will increase the precision of wc_get_price_decimals by 2 decimals, unless WC_ROUNDING_PRECISION is set to a higher number.
  *
  * @since 2.6.3
  * @return int
  */
 function wc_get_rounding_precision() {
 	$precision = wc_get_price_decimals() + 2;
-	if ( $precision < absint( WC_ROUNDING_PRECISION ) ) {
+	if ( absint( WC_ROUNDING_PRECISION ) > $precision ) {
 		$precision = absint( WC_ROUNDING_PRECISION );
 	}
-
-	/**
-	 * Filter the rounding precision for internal WC calculations. This is different from the number of decimals used for display.
-	 * Generally, this filter can be used to decrease the precision, but if you choose to decrease, there maybe side effects such as off by one rounding errors for certain tax rate combinations.
-	 *
-	 * @since 8.8.0
-	 *
-	 * @param int $precision The number of decimals to round to.
-	 */
-	return apply_filters( 'woocommerce_internal_rounding_precision', $precision );
+	return $precision;
 }
 
 /**
- * Add precision to a number by moving the decimal point to the right as many places as indicated by wc_get_price_decimals().
- * Optionally the result is rounded so that the total number of digits equals wc_get_rounding_precision() plus one.
+ * Add precision to a number and return a number.
  *
  * @since  3.2.0
- * @param  float|null $value Number to add precision to.
- * @param  bool       $round If the result should be rounded.
+ * @param  float $value Number to add precision to.
+ * @param  bool  $round If should round after adding precision.
  * @return int|float
  */
-function wc_add_number_precision( ?float $value, bool $round = true ) {
-	if ( ! $value ) {
-		return 0.0;
-	}
-
+function wc_add_number_precision( $value, $round = true ) {
 	$cent_precision = pow( 10, wc_get_price_decimals() );
 	$value          = $value * $cent_precision;
 	return $round ? NumberUtil::round( $value, wc_get_rounding_precision() - wc_get_price_decimals() ) : $value;
@@ -2044,10 +1898,6 @@ function wc_add_number_precision( ?float $value, bool $round = true ) {
  * @return float
  */
 function wc_remove_number_precision( $value ) {
-	if ( ! $value ) {
-		return 0.0;
-	}
-
 	$cent_precision = pow( 10, wc_get_price_decimals() );
 	return $value / $cent_precision;
 }
@@ -2099,7 +1949,9 @@ function wc_remove_number_precision_deep( $value ) {
  *     - an instance which will be used directly as the logger
  * In either case, the class or instance *must* implement WC_Logger_Interface.
  *
- * @return WC_Logger_Interface
+ * @see WC_Logger_Interface
+ *
+ * @return WC_Logger
  */
 function wc_get_logger() {
 	static $logger = null;
@@ -2198,6 +2050,25 @@ function wc_print_r( $expression, $return = false ) {
 }
 
 /**
+ * Registers the default log handler.
+ *
+ * @since 3.0
+ * @param array $handlers Handlers.
+ * @return array
+ */
+function wc_register_default_log_handler( $handlers ) {
+	$handler_class = Constants::get_constant( 'WC_LOG_HANDLER' );
+	if ( ! class_exists( $handler_class ) ) {
+		$handler_class = WC_Log_Handler_File::class;
+	}
+
+	array_push( $handlers, new $handler_class() );
+
+	return $handlers;
+}
+add_filter( 'woocommerce_register_log_handlers', 'wc_register_default_log_handler' );
+
+/**
  * Based on wp_list_pluck, this calls a method instead of returning a property.
  *
  * @since 3.0.0
@@ -2285,9 +2156,7 @@ function wc_get_permalink_structure() {
  * @since 3.1.0
  */
 function wc_switch_to_site_locale() {
-	global $wp_locale_switcher;
-
-	if ( function_exists( 'switch_to_locale' ) && isset( $wp_locale_switcher ) ) {
+	if ( function_exists( 'switch_to_locale' ) ) {
 		switch_to_locale( get_locale() );
 
 		// Filter on plugin_locale so load_plugin_textdomain loads the correct locale.
@@ -2304,9 +2173,7 @@ function wc_switch_to_site_locale() {
  * @since 3.1.0
  */
 function wc_restore_locale() {
-	global $wp_locale_switcher;
-
-	if ( function_exists( 'restore_previous_locale' ) && isset( $wp_locale_switcher ) ) {
+	if ( function_exists( 'restore_previous_locale' ) ) {
 		restore_previous_locale();
 
 		// Remove filter.
@@ -2368,7 +2235,7 @@ function wc_get_var( &$var, $default = null ) {
  */
 function wc_enable_wc_plugin_headers( $headers ) {
 	if ( ! class_exists( 'WC_Plugin_Updates' ) ) {
-		include_once __DIR__ . '/admin/plugin-updates/class-wc-plugin-updates.php';
+		include_once dirname( __FILE__ ) . '/admin/plugin-updates/class-wc-plugin-updates.php';
 	}
 
 	// WC requires at least - allows developers to define which version of WooCommerce the plugin requires to run.
@@ -2403,7 +2270,7 @@ function wc_prevent_dangerous_auto_updates( $should_update, $plugin ) {
 	}
 
 	if ( ! class_exists( 'WC_Plugin_Updates' ) ) {
-		include_once __DIR__ . '/admin/plugin-updates/class-wc-plugin-updates.php';
+		include_once dirname( __FILE__ ) . '/admin/plugin-updates/class-wc-plugin-updates.php';
 	}
 
 	$new_version    = wc_clean( $plugin->new_version );
@@ -2499,7 +2366,6 @@ function wc_is_active_theme( $theme ) {
 function wc_is_wp_default_theme_active() {
 	return wc_is_active_theme(
 		array(
-			'twentytwentythree',
 			'twentytwentytwo',
 			'twentytwentyone',
 			'twentytwenty',
@@ -2578,7 +2444,15 @@ function wc_decimal_to_fraction( $decimal ) {
  * @return float
  */
 function wc_round_discount( $value, $precision ) {
-	return NumberUtil::round( $value, $precision, WC_DISCOUNT_ROUNDING_MODE ); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.round_modeFound
+	if ( version_compare( PHP_VERSION, '5.3.0', '>=' ) ) {
+		return NumberUtil::round( $value, $precision, WC_DISCOUNT_ROUNDING_MODE ); // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctionParameters.round_modeFound
+	}
+
+	if ( PHP_ROUND_HALF_DOWN === WC_DISCOUNT_ROUNDING_MODE ) {
+		return wc_legacy_round_half_down( $value, $precision );
+	}
+
+	return NumberUtil::round( $value, $precision );
 }
 
 /**
@@ -2602,20 +2476,25 @@ function wc_selected( $value, $options ) {
  * Retrieves the MySQL server version. Based on $wpdb.
  *
  * @since 3.4.1
- * @return array Version information.
+ * @return array Vesion information.
  */
 function wc_get_server_database_version() {
 	global $wpdb;
 
-	if ( empty( $wpdb->is_mysql ) || empty( $wpdb->use_mysqli ) ) {
+	if ( empty( $wpdb->is_mysql ) ) {
 		return array(
 			'string' => '',
 			'number' => '',
 		);
 	}
 
-	// phpcs:ignore WordPress.DB.RestrictedFunctions
-	$server_info = mysqli_get_server_info( $wpdb->dbh );
+	// phpcs:disable WordPress.DB.RestrictedFunctions, PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
+	if ( $wpdb->use_mysqli ) {
+		$server_info = mysqli_get_server_info( $wpdb->dbh );
+	} else {
+		$server_info = mysql_get_server_info( $wpdb->dbh );
+	}
+	// phpcs:enable WordPress.DB.RestrictedFunctions, PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved
 
 	return array(
 		'string' => $server_info,

@@ -115,6 +115,7 @@ class WC_Tax_Rate_Importer extends WP_Importer {
 		wc_set_time_limit( 0 );
 		@ob_flush();
 		@flush();
+		@ini_set( 'auto_detect_line_endings', '1' );
 	}
 
 	/**
@@ -146,8 +147,8 @@ class WC_Tax_Rate_Importer extends WP_Importer {
 		if ( false !== $handle ) {
 
 			$header = fgetcsv( $handle, 0, $this->delimiter );
-			$count  = is_countable( $header ) ? count( $header ) : 0;
-			if ( 10 === $count ) {
+
+			if ( 10 === count( $header ) ) {
 
 				$row = fgetcsv( $handle, 0, $this->delimiter );
 
