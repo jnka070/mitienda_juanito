@@ -1,0 +1,2 @@
+2025-02-27T12:20:30+00:00 INFO Payment gateway enabled: ""
+2025-02-27T12:22:39+00:00 DEBUG Se ha procesado un pago CONTEXT: {"code":"201","msg_banco":"Pago Aprobado","voucher":"","id_pago":"41f0381f-092c-4141-9ffd-c63172c62fa4","reference":"231446","sequence":"231446","approval":"231446","lote":"231446"}
