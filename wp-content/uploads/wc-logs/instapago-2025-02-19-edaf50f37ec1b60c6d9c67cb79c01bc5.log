@@ -1,0 +1,36 @@
+2025-02-19T19:45:26+00:00 DEBUG Array
+(
+    [code] => 201
+    [msg_banco] => Pago Aprobado
+    [voucher] => 
+    [id_pago] => 7b7e64c4-4fca-4c23-bc23-8080335671d4
+    [reference] => 741059
+    [sequence] => 741059
+    [approval] => 741059
+    [lote] => 741059
+)
+
+2025-02-19T20:06:58+00:00 DEBUG Array
+(
+    [code] => 201
+    [msg_banco] => Pago Aprobado
+    [voucher] => 
+    [id_pago] => 17803d59-b329-4761-8e85-f329022f9fe2
+    [reference] => 24586
+    [sequence] => 24586
+    [approval] => 24586
+    [lote] => 24586
+)
+
+2025-02-19T20:19:33+00:00 DEBUG Array
+(
+    [code] => 201
+    [msg_banco] => Pago Aprobado
+    [voucher] => 
+    [id_pago] => cd8404fd-650c-43a2-9c00-ea02aefea578
+    [reference] => 722352
+    [sequence] => 722352
+    [approval] => 722352
+    [lote] => 722352
+)
+

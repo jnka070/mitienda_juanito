@@ -1,0 +1,183 @@
+.instaweb-form--container {
+    max-width: 400px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    max-width: 500px;
+    padding: 20px 10px 40px 10px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos generales para los inputs y selects */
+.instaweb-form--input,
+.instaweb-form--select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    transition:
+        border 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+/* Efecto al hacer focus */
+.instaweb-form--input:focus,
+.instaweb-form--select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Organización de los selectores en una sola línea */
+#div_cliente,
+#div_tarjetas,
+#div_venc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14.5px;
+    margin: 10px 12px 10px 10px;
+}
+
+.instaweb-form--tipe {
+    width: 30%;
+}
+
+.instaweb-form--cchnameid {
+    width: 65%;
+}
+
+.instaweb-form--tdc-number {
+    width: 60%;
+}
+
+.instaweb-form--ccv {
+    width: 35%;
+}
+
+.instaweb-form--exp-month,
+.instaweb-form--exp-year {
+    width: 48%;
+}
+
+/* Mejoras en los textos de ayuda */
+.instaweb-form--input {
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Centrar imágenes y textos */
+.instaweb-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+.instaweb-text-center {
+    text-align: center;
+    vertical-align: center;
+    font-size: 14px;
+    color: #666;
+    margin: 10px 10px 10px 10px;
+}
+
+.instaweb-visa-mastercard {
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 10px;
+}
+
+.field-card{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.instaweb-text-img {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 10px 0px 0px 0px;
+    align-items: center;
+}
+
+.instaweb-text {
+    flex: 1;
+    text-align: left;
+}
+
+.instaweb-img-container {
+    flex-shrink: 0;
+    max-width: 35%;
+}
+
+.instaweb-img {
+    height: auto !important;
+    max-height: none !important;
+}
+
+.iq-visa-mastercard {
+    max-width: 100px !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .instaweb-form--container {
+        width: 100%;
+        padding: 20px 10px 40px 10px;
+    }
+
+    #div_cliente,
+    #div_tarjetas,
+    #div_venc {
+        flex-direction: column;
+    }
+
+    .instaweb-form--tipe,
+    .instaweb-form--cchnameid,
+    .instaweb-form--tdc-number,
+    .instaweb-form--ccv,
+    .instaweb-form--exp-month,
+    .instaweb-form--exp-year {
+        width: 100%;
+    }
+
+    .instaweb-text-img {
+        flex-direction: column; /* Los elementos se apilan verticalmente */
+        align-items: center; /* Centrar los elementos en la columna */
+        gap: 20px; /* Más espacio entre los elementos */
+    }
+
+    .instaweb-text {
+        text-align: center; /* Centrar el texto en dispositivos pequeños */
+        width: 100%; /* Asegurarse de que el texto ocupe todo el ancho disponible */
+    }
+
+    .instaweb-img-container {
+        max-width: 60%; /* Aumentar el tamaño de la imagen en pantallas pequeñas */
+        width: 100%; /* Asegurarse de que ocupe el 100% del contenedor */
+        margin: 0 auto; /* Centrar la imagen */
+    }
+
+    .instaweb-img {
+        width: 100%; /* Asegurarse de que la imagen sea responsiva */
+        height: auto; /* Mantener la proporción de la imagen */
+    }
+
+    .iq-visa-mastercard {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
