@@ -7,13 +7,13 @@
 			<option value="J">J</option>
 			<option value="G">G</option>
 		</select>
-		<input type="text" id="instaweb_cchnameid" class="instaweb-form--input instaweb-form--cchnameid" name="user_dni" tabindex="3" placeholder="<?php _e(__('Número de Identificación', 'instaweb')); ?>" autocomplete="off" minlength="6" maxlength="8" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+		<input type="text" id="instaweb_cchname" class="instaweb-form--cchnameid instaweb-form--input" name="user_dni" tabindex="3" placeholder="<?php _e(__('Número de Identificación', 'instaweb')); ?>" autocomplete="off" minlength="6" maxlength="8" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 	</div>
 	<div id="div_tarjetas">
-		<input type="text" id="instaweb_ccnum" class="instaweb-form--input instaweb-form--tdc-number" name="valid_card_number" tabindex="4" placeholder="<?php _e(__('Número de tarjeta', 'instaweb')); ?>" autocomplete="off" maxlength="16" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" title="<?php _e(__('Número de tarjeta', 'instaweb')); ?>">
-		<input type="password" id="instaweb_cvv" class="instaweb-form--input instaweb-form--ccv" name="cvc_code" tabindex="5" placeholder="<?php _e(__('Cód de seguridad', 'instaweb')); ?>" autocomplete="off" maxlength="3" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" title="<?php _e(__('Cód de seguridad', 'instaweb')); ?>">
+		<input type="text" id="instaweb_ccnum" class="instaweb-form--input field-card instaweb-form--tdc-number" name="valid_card_number" tabindex="4" placeholder="<?php _e(__('Número de tarjeta', 'instaweb')); ?>" autocomplete="off" maxlength="16" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" title="<?php _e(__('Número de tarjeta', 'instaweb')); ?>">
+		<input type="password" id="instaweb_cvv" class="instaweb-form--input field-card instaweb-form--ccv" name="cvc_code" tabindex="5" placeholder="<?php _e(__('Cód de Seguridad', 'instaweb')); ?>" autocomplete="off" maxlength="3" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" title="<?php _e(__('Cód de Seg.', 'instaweb')); ?>">
+		<p class="instaweb-form--txt-help"><?php _e(__('Fecha de vencimiento', 'instaweb')); ?></p>
 	</div>
-	<p class="instaweb-form--txt-help"><?php _e(__('Fecha de vencimiento', 'instaweb')); ?></p>
 	<div id="div_venc">
 		<select id="exp_month" class="instaweb-form--select instaweb-form--exp-month" name="exp_month" tabindex="6">
 			<option value="-1"><?php _e(__('Mes', 'instaweb')); ?></option>

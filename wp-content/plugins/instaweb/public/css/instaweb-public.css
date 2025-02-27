@@ -1,7 +1,6 @@
 .instaweb-form--container {
     max-width: 400px;
     margin: 20px auto;
-    margin: 3 auto;
     box-sizing: border-box;
     max-width: 500px;
     padding: 20px 10px 40px 10px;
@@ -20,7 +19,7 @@
     box-sizing: border-box;
     background-color: #fff;
     margin-bottom: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     transition:
         border 0.3s ease-in-out,
         box-shadow 0.3s ease-in-out;
@@ -40,7 +39,8 @@
 #div_venc {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 14.5px;
+    margin: 10px 12px 10px 10px;
 }
 
 .instaweb-form--tipe {
@@ -65,7 +65,7 @@
 }
 
 /* Mejoras en los textos de ayuda */
-.instaweb-form--txt-help {
+.instaweb-form--input {
     font-size: 18px;
     color: #333;
     font-weight: 500;
@@ -85,6 +85,7 @@
     vertical-align: center;
     font-size: 14px;
     color: #666;
+    margin: 10px 10px 10px 10px;
 }
 
 .instaweb-visa-mastercard {
@@ -92,6 +93,14 @@
     display: flex !important;
     justify-content: center !important;
     margin-top: 10px;
+}
+
+.field-card{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 .instaweb-text-img {
