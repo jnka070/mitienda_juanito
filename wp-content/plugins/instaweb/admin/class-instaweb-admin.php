@@ -1,5 +1,6 @@
 <?php
 
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 use Automattic\WooCommerce\Utilities\FeaturesUtil;
 
 /**
@@ -127,7 +128,7 @@ class Instaweb_Admin
 
     public function init_instaweb_bank_class()
     {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'payment/WC_Gateway_Instaweb_Commerce.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'api/WC_Gateway_Instaweb_Commerce.php';
 
         return new WC_Gateway_Instaweb_Commerce();
     }
@@ -149,7 +150,7 @@ class Instaweb_Admin
             'manage_options', // Capacidad necesaria para acceder a la página
             'instaweb-settings', // Slug de la página
             [$this, 'load_instaweb_settings'], // Función para mostrar la página
-            plugins_url('instaweb/admin/img/icon-20x20.png'), // Icono
+            plugins_url('instaweb/admin/img/icon-20x20.png') // Icono
         );
     }
 
@@ -279,29 +280,39 @@ class Instaweb_Admin
     function instaweb_declare_woocommerce_compatibility()
     {
         // Verificar si WooCommerce está activo y si FeaturesUtil existe
-        if (class_exists('WooCommerce') && class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+        if ( class_exists(FeaturesUtil::class)) {
             $path = WP_PLUGIN_DIR . '/instaweb';
-
+    
             try {
-                // Declarar la compatibilidad con cart_checkout_blocks
-                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                    INSTAWEB_CART_CHECKOUT_BLOCKS,
-                    $path,
-                    true // Compatible
-                );
-
-                // Declarar la compatibilidad con custom_order_tables
-                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                    INSTAWEB_CUSTOM_ORDER_TABLES,
-                    $path,
-                    true // Compatible
-                );
+                // Verificar si las constantes están definidas antes de usarlas
+                if (defined('INSTAWEB_CART_CHECKOUT_BLOCKS') && defined('INSTAWEB_CUSTOM_ORDER_TABLES')) {
+                    // Declarar la compatibilidad con cart_checkout_blocks
+                    FeaturesUtil::declare_compatibility(
+                        INSTAWEB_CART_CHECKOUT_BLOCKS,
+                        $path,
+                        true // Compatible
+                    );
+    
+                    // Declarar la compatibilidad con custom_order_tables
+                    FeaturesUtil::declare_compatibility(
+                        INSTAWEB_CUSTOM_ORDER_TABLES,
+                        $path,
+                        true // Compatible
+                    );
+                } else {
+                    // Registrar un error si las constantes no están definidas
+                    error_log('Las constantes de compatibilidad no están definidas: INSTAWEB_CART_CHECKOUT_BLOCKS o INSTAWEB_CUSTOM_ORDER_TABLES');
+                }
             } catch (\Exception $e) {
                 // Manejar cualquier error que ocurra durante la declaración
                 error_log('Error declarando la compatibilidad de instaweb con WooCommerce: ' . $e->getMessage());
             }
+        } else {
+            // Registrar un error si WooCommerce o FeaturesUtil no están presentes
+            error_log('WooCommerce blocks o FeaturesUtil no están disponibles.');
         }
     }
+    
 
     // public function instapago_gateway_block_support(): void {
 
@@ -328,7 +339,8 @@ class Instaweb_Admin
     /**
      * Registra el método de pago de Instapago para bloques de WooCommerce.
      */
-    function instaweb_register_gateway_blocks_support( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+    function instaweb_register_gateway_blocks_support( PaymentMethodRegistry $payment_method_registry ) {
+
         if ( class_exists( 'WC_Instaweb_Gateway_Blocks_Support' ) ) {
             $payment_method_registry->register( new WC_Instaweb_Gateway_Blocks_Support );
         } else {
@@ -341,13 +353,14 @@ class Instaweb_Admin
      */
     public function instapago_gateway_block_support(): void {
         // Verificar si WooCommerce Blocks está activo
-        if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry' ) ) {
+        if ( class_exists( PaymentMethodRegistry::class ) ) {
             $this->instaweb_include_gateway_blocks_support();
-    
+            
             add_action(
                 'woocommerce_blocks_payment_method_type_registration',
                 [ $this, 'instaweb_register_gateway_blocks_support' ]
             );
+            
         } else {
             error_log( 'Instaweb: WooCommerce Blocks no está activo.' );
         }

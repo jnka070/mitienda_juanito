@@ -31,10 +31,10 @@
 })(jQuery);
 
 document.addEventListener("DOMContentLoaded", function () {
-    var cchname = document.getElementById("iq_instapago_cchname");
-    var cchnameid = document.getElementById("iq_instapago_cchnameid");
-    var ccnum = document.getElementById("iq_instapago_ccnum");
-    var cvv = document.getElementById("iq_instapago_cvv");
+    var cchname = document.getElementById("instaweb_name");
+    var cchnameid = document.getElementById("instaweb_document");
+    var ccnum = document.getElementById("instaweb_card");
+    var cvv = document.getElementById("instaweb_cvc");
 
     function setBorderStyle(element, borderColor) {
         element.style.borderColor = borderColor;

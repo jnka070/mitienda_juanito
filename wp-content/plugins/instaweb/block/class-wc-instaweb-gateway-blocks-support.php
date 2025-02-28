@@ -18,7 +18,7 @@ final class WC_Instaweb_Gateway_Blocks_Support extends AbstractPaymentMethodType
 
 	public function get_payment_method_script_handles(): array
 	{
-        $path =  WP_PLUGIN_DIR.'/instaweb';
+		$path =  WP_PLUGIN_DIR.'/instaweb';
 
         $asset_path   = $path .  '/build/index.asset.php';
 		$version      = null;
@@ -34,7 +34,6 @@ final class WC_Instaweb_Gateway_Blocks_Support extends AbstractPaymentMethodType
 			'wc-instaweb-gateway-blocks-integration',
             $path .  '/build/index.js',
 			$dependencies,
-			$version,
 			true
 		);
 

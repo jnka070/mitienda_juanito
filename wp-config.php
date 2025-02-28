@@ -63,6 +63,9 @@ define( 'AUTH_SALT',        'UpZ6t0D3bIhHPtfjfXjmFXblAA8wFHasJUCu46mgBYu4yrlyAoM
 define( 'SECURE_AUTH_SALT', 'RrALIQVBXvYhytsq5jstrGksUKJjAopKOj4gLODptBUVv1SZZtBJt7BYaJAEdSrl' );
 define( 'LOGGED_IN_SALT',   'rQOMDiZYfNXXIFOZvAyBgxHxuWXsbMChkmzZN5Hdkdf1oNvIfSMDBTv7jTX2AQZV' );
 define( 'NONCE_SALT',       '3U0VFq1pwOPxmvKLakw9t29yv8hqw4zPEwvratntvuSI992nHFs3TeDhtp8F2EY2' );
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true); // Guarda los errores en wp-content/debug.log
+define('WP_DEBUG_DISPLAY', false); // No muestra los errores en el navegador
 
 /**#@-*/
 
@@ -92,8 +95,6 @@ $table_prefix = 'wp_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', false );
-
 /* Add any custom values between this line and the "stop editing" line. */
 
 

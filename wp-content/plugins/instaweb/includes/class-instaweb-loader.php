@@ -100,17 +100,17 @@ class Instaweb_Loader
      * A utility function that is used to register the shortcodes and hooks into a single
      * collection.
      */
-    private function add_s($shortcodes, $tag, $component, $callback)
-    {
+    // private function add_s($shortcodes, $tag, $component, $callback)
+    // {
 
-        $shortcodes[] = [
-            'tag' => $tag,
-            'component' => $component,
-            'callback' => $callback,
-        ];
+    //     $shortcodes[] = [
+    //         'tag' => $tag,
+    //         'component' => $component,
+    //         'callback' => $callback,
+    //     ];
 
-        return $shortcodes;
-    }
+    //     return $shortcodes;
+    // }
 
     /**
      * Register the hooks with WordPress.

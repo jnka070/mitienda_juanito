@@ -23,9 +23,8 @@
         <p class="description">
             <?php esc_html_e('Configure the Insta Web settings below.', 'instaweb'); ?>
         </p>
-        
         <hr>
-
+        <p><?php echo('instaweb-settings')?></p>
         <form method="post" action="options.php" class="instaweb-settings-form">
             <?php
             settings_fields('instaweb_settings'); // Seguridad en los ajustes
